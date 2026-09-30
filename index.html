@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>抽出所</title>
+<link rel="stylesheet" href="css/gacha.css">
+</head>
+<body>
+<main class="page">
+<header class="header">
+  <div><p class="eyebrow">EXTRACTION OFFICE</p><h1>抽出</h1></div>
+</header>
+
+<section class="carousel">
+<button class="arrow" id="prev">‹</button>
+<div class="viewport"><div class="track" id="track">
+
+<article class="slide">
+  <div class="banner identity"><span>IDENTITY</span></div>
+  <div class="content"><p class="category">人格抽出</p><h2>通常人格抽出</h2><p>通常の人格から1名を抽出します。</p>
+  <button class="extract" onclick="startExtraction('identity')">抽出する</button></div>
+</article>
+
+<article class="slide">
+  <div class="banner ego"><span>E.G.O</span></div>
+  <div class="content"><p class="category">E.G.O抽出</p><h2>E.G.O抽出</h2><p>E.G.Oから1つを抽出します。</p>
+  <button class="extract" onclick="startExtraction('ego')">抽出する</button></div>
+</article>
+
+<article class="slide">
+  <div class="banner pack"><span>SELECT PACK</span></div>
+  <div class="content"><p class="category">特定抽出</p><h2>特定抽出パック</h2><p>抽出するパックを選択します。</p>
+  <button class="extract" onclick="openPackSelector()">パックを選ぶ</button></div>
+</article>
+
+<article class="slide">
+  <div class="banner special"><span>ABNORMAL</span></div>
+  <div class="content"><p class="category">特殊抽出</p><h2>特異人格抽出</h2><p>特異人格から1名を抽出します。</p>
+  <button class="extract" onclick="startExtraction('special')">抽出する</button></div>
+</article>
+
+</div></div>
+<button class="arrow" id="next">›</button>
+</section>
+<div class="dots" id="dots"></div>
+</main>
+
+<div class="modal" id="packModal"><div class="window">
+<button class="close" onclick="closePackSelector()">×</button>
+<p class="eyebrow">SELECT EXTRACTION PACK</p><h2>特定抽出パックを選択</h2>
+<div id="packList" class="pack-list"></div>
+</div></div>
+
+<div class="modal" id="detailModal"><div class="window">
+<button class="close" onclick="closeDetail()">×</button>
+<p class="eyebrow">PACK CONTENTS</p><h2 id="detailTitle"></h2><p id="detailDescription" class="muted"></p>
+<div id="detailItems" class="item-list"></div>
+<button id="packExtractButton" class="extract large">このパックから抽出</button>
+</div></div>
+
+<div class="animation-screen" id="animationScreen">
+  <div class="particles"></div><div class="flash"></div><div class="summon-ring"></div>
+  <div class="result-scene" id="resultScene">
+    <div class="summon-card" id="summonCard">
+      <div class="card-back">EXTRACTION</div>
+      <div class="card-front" id="cardFront"></div>
+    </div>
+    <section class="result-info" id="resultInfo">
+      <p class="eyebrow">EXTRACTION RESULT</p>
+      <h2 id="resultName"></h2><p class="result-rarity" id="resultRarity"></p>
+      <div class="performance" id="resultPerformance"></div>
+      <div class="result-actions">
+        <button id="shareButton" class="action-button">共有</button>
+        <button id="okButton" class="action-button primary">OK</button>
+      </div>
+    </section>
+  </div>
+  <p class="tap-message" id="tapMessage">抽出中……</p>
+  <p class="share-status" id="shareStatus"></p>
+</div>
+
+<script src="js/gacha.js"></script>
+</body></html>
