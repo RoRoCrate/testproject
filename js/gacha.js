@@ -48,6 +48,7 @@ async function loadData() {
     data.egos = await loadTSV("data/ego.tsv");
     data.packs = await loadTSV("data/packs.tsv");
   }
+}
 
 function openPackSelector() {
   packList.innerHTML = data.packs.map(p => `
@@ -68,13 +69,20 @@ function openPackDetail(id) {
   detailTitle.textContent = selectedPack.name;
   detailDescription.textContent = selectedPack.description || "";
   
-  const a = data.identities.filter(x => (x.pack || "").split(",").map(p => p.trim()).includes(id));
+  // パックに含まれる人格とE.G.Oを取得
+  const matchedIdentities = data.identities.filter(x => (x.pack || "").split(",").map(p => p.trim()).includes(id));
+  const matchedEgos = data.egos.filter(x => (x.pack || "").split(",").map(p => p.trim()).includes(id));
   
-  detailItems.innerHTML = a.length
-    ? a.map(x => `
+  const allItems = [
+    ...matchedIdentities.map(x => ({ ...x, label: x.type === "special" ? "特異人格" : "通常人格" })),
+    ...matchedEgos.map(x => ({ ...x, label: "E.G.O" }))
+  ];
+  
+  detailItems.innerHTML = allItems.length
+    ? allItems.map(x => `
         <div class="item">
           ${esc(x.name)}
-          <span class="rarity">${esc(x.type === "special" ? "特異人格" : "通常人格")}</span>
+          <span class="rarity">${esc(x.label)}</span>
         </div>
       `).join("")
     : `<div class="item">登録データなし</div>`;
@@ -121,18 +129,29 @@ function formatList(value) {
 }
 
 function startExtraction(type, pack) {
-  let p = type === "ego"
-    ? data.egos
-    : type === "special"
-      ? data.identities.filter(x => x.type === "special")
-      : type === "pack"
-        ? data.identities.filter(x => (x.pack || "").split(",").map(p => p.trim()).includes(pack))
-        : data.identities.filter(x => x.type === "normal" || !x.type);
+  let p = [];
+
+  if (type === "ego") {
+    p = data.egos.map(x => ({ ...x, type: "ego" }));
+  } else if (type === "special") {
+    p = data.identities.filter(x => x.type === "special");
+  } else if (type === "pack") {
+    const packIdentities = data.identities.filter(x => 
+      (x.pack || "").split(",").map(p => p.trim()).includes(pack)
+    );
+    const packEgos = data.egos.filter(x => 
+      (x.pack || "").split(",").map(p => p.trim()).includes(pack)
+    ).map(x => ({ ...x, type: "ego" }));
+
+    p = [...packIdentities, ...packEgos];
+  } else {
+    p = data.identities.filter(x => x.type === "normal" || !x.type);
+  }
 
   if (!p.length) return alert("抽出対象がありません。");
 
   const result = weighted(p);
-  runGacha({ ...result, type: type === "ego" ? "ego" : (result.type || "normal") });
+  runGacha({ ...result, type: result.type || (type === "ego" ? "ego" : "normal") });
 }
 
 function runGacha(result) {
