@@ -50,7 +50,7 @@ async function loadData() {
   } catch (e) {
     console.error("データの読み込みに失敗しました:", e);
     data = { identities: [], egos: [], packs: [] };
-  }
+  };
 }
 
 function openPackSelector() {
