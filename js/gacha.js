@@ -47,28 +47,7 @@ async function loadData() {
     data.identities = await loadTSV("data/identity.tsv");
     data.egos = await loadTSV("data/ego.tsv");
     data.packs = await loadTSV("data/packs.tsv");
-  } catch (e) {
-    data = {
-      identities: [
-        { id: "id001", name: "通常人格 A", rarity: "★2", type: "normal", weight: "70" },
-        { id: "id002", name: "通常人格 B", rarity: "★3", type: "normal", weight: "25" },
-        { id: "id003", name: "通常人格 C", rarity: "★4", type: "normal", weight: "5" },
-        { id: "id999", name: "特定人格 A", rarity: "★4", type: "special", weight: "100" },
-        { id: "id101", name: "氷結航路 船員", rarity: "★3", type: "normal", weight: "40", pack: "pack001" },
-        { id: "id102", name: "氷結航路 航海士", rarity: "★3", type: "normal", weight: "35", pack: "pack001" },
-        { id: "id103", name: "氷結航路 船長", rarity: "★4", type: "normal", weight: "25", pack: "pack001" }
-      ],
-      egos: [
-        { id: "ego001", name: "E.G.O A", rarity: "★2", weight: "70", danger: "WAW", resource: "怠惰 × 2 / 色欲 × 1", keywords: "氷結 / 防御 / 振動", description: "このE.G.Oは氷結と防御を組み合わせた性質を持つE.G.Oです。" },
-        { id: "ego002", name: "E.G.O B", rarity: "★3", weight: "25", danger: "HE", resource: "憂鬱 × 2", keywords: "出血 / 斬撃", description: "このE.G.Oは攻撃と状態異常を重視した性質を持つE.G.Oです。" },
-        { id: "ego003", name: "E.G.O C", rarity: "★4", weight: "5", danger: "ALEPH", resource: "怠惰 × 3 / 暴食 × 2", keywords: "破裂 / 振動 / 反撃", description: "このE.G.Oは非常に強い性質を持つE.G.Oです。" }
-      ],
-      packs: [
-        { id: "pack001", name: "氷結航路", description: "氷結航路に登場する人格を抽出します。" }
-      ]
-    };
   }
-}
 
 function openPackSelector() {
   packList.innerHTML = data.packs.map(p => `
