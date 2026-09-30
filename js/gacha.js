@@ -74,7 +74,7 @@ function openPackDetail(id) {
     ? a.map(x => `
         <div class="item">
           ${esc(x.name)}
-          <span class="rarity">${esc(x.type === "special" ? "特定人格" : "通常人格")}</span>
+          <span class="rarity">${esc(x.type === "special" ? "特異人格" : "通常人格")}</span>
         </div>
       `).join("")
     : `<div class="item">登録データなし</div>`;
@@ -113,7 +113,7 @@ function rankClass(x) {
 
 function resultLabel(x) {
   if (String(x.type || "") === "ego") return String(x.danger || "-");
-  return String(x.type || "normal") === "special" ? "特定人格" : "通常人格";
+  return String(x.type || "normal") === "special" ? "特異人格" : "通常人格";
 }
 
 function formatList(value) {
