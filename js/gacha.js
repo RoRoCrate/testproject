@@ -50,7 +50,7 @@ async function loadData() {
   } catch (e) {
     console.error("データの読み込みに失敗しました:", e);
     data = { identities: [], egos: [], packs: [] };
-  };
+  }
 }
 
 function openPackSelector() {
@@ -239,15 +239,13 @@ function runGacha(result) {
 }
 
 function shareResult(r) {
-  const d = btoa(unescape(encodeURIComponent(JSON.stringify({
-    id: r.id, name: r.name, rarity: r.rarity, type: r.type, danger: r.danger || "",
-    resource: r.resource || "", keywords: r.keywords || "", description: r.description || "",
-    affiliation: r.affiliation || "", hp: r.hp || "", san: r.san || "", speed: r.speed || "",
-    slash: r.slash || "", pierce: r.pierce || "", blunt: r.blunt || "", bullets: r.bullets || "",
-    image: r.image || ""
-  }))));
+  // IDとタイプのみをクエリパラメータにセットして短縮化
+  const params = new URLSearchParams({
+    id: r.id,
+    type: String(r.type || "").includes("ego") ? "ego" : (r.type || "normal")
+  });
   
-  const u = `${location.origin}${location.pathname}?result=${encodeURIComponent(d)}`;
+  const u = `${location.origin}${location.pathname}?${params.toString()}`;
   
   navigator.clipboard?.writeText(u)
     .then(() => shareStatus.textContent = "結果リンクをコピーしました。")
@@ -260,15 +258,35 @@ function closeGacha() {
 }
 
 function showShared() {
-  const q = new URLSearchParams(location.search).get("result");
-  if (!q) return;
-  try {
-    const r = JSON.parse(decodeURIComponent(escape(atob(q))));
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+  const type = params.get("type");
+  const legacyResult = params.get("result");
+
+  // 旧方式（?result=...）への後方互換対応
+  if (legacyResult) {
+    try {
+      const r = JSON.parse(decodeURIComponent(escape(atob(legacyResult))));
+      setTimeout(() => {
+        runGacha(r);
+        setTimeout(() => { summonCard.click(); }, 80);
+      }, 100);
+    } catch (e) { }
+    return;
+  }
+
+  if (!id) return;
+
+  // 短縮URL方式（?id=...&type=...）：読み込み済みデータから検索して再構成
+  const pool = type === "ego" ? data.egos : data.identities;
+  const item = pool.find(x => x.id === id);
+
+  if (item) {
     setTimeout(() => {
-      runGacha(r);
+      runGacha({ ...item, type: type || item.type || "normal" });
       setTimeout(() => { summonCard.click(); }, 80);
     }, 100);
-  } catch (e) { }
+  }
 }
 
 function esc(s) {
