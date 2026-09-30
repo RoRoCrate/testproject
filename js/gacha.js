@@ -47,6 +47,9 @@ async function loadData() {
     data.identities = await loadTSV("data/identity.tsv");
     data.egos = await loadTSV("data/ego.tsv");
     data.packs = await loadTSV("data/packs.tsv");
+  } catch (e) {
+    console.error("データの読み込みに失敗しました:", e);
+    data = { identities: [], egos: [], packs: [] };
   }
 }
 
