@@ -184,7 +184,7 @@ function runGacha(result) {
     front.classList.add("show");
 
     // TSV内に image 列があれば優先指定。なければ images/cards/{id}.jpg を参照
-    const imgSrc = result.image || `images/cards/${result.id}.webp`;
+    const imgSrc = result.image || `images/cards/No.${result.id}.webp`;
     //const imgSrc = result.image || `images/cards/test.png`;
 
     // カード上にはテキストを一切配置せず、画像のみを表示
