@@ -181,18 +181,24 @@ function runGacha(result) {
   }, 2200);
 
   card.onclick = () => {
-    front.classList.add("show");
+  front.classList.add("show");
 
-    // TSV内に image 列があれば優先指定。なければ images/cards/{id}.jpg を参照
-    const imgSrc = result.image || `images/cards/No.${result.id}.webp`;
-    //const imgSrc = result.image || `images/cards/test.png`;
+  // TSV内に image があればそれを優先。パスが含まれていなければ images/cards/ を自動付与
+  let imgSrc = result.image;
+  if (imgSrc) {
+    if (!imgSrc.includes("/")) {
+      imgSrc = `images/cards/${imgSrc}`;
+    }
+  } else {
+    imgSrc = `images/cards/No.${result.id}.webp`;
+  }
 
-    // カード上にはテキストを一切配置せず、画像のみを表示
-    front.innerHTML = `
-      <div class="card-image-wrap">
-        <img src="${imgSrc}" alt="${esc(result.name)}" class="card-img" onerror="this.classList.add('img-error');">
-      </div>
-    `;
+  // カード上にはテキストを一切配置せず、画像のみを表示
+  front.innerHTML = `
+    <div class="card-image-wrap">
+      <img src="${imgSrc}" alt="${esc(result.name)}" class="card-img" onerror="this.classList.add('img-error');">
+    </div>
+  `;
 
     tapMessage.textContent = "";
 
