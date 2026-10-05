@@ -3,7 +3,7 @@ html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 20%,
 .modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:20px;background:#000c}.modal.open{display:flex}.window{position:relative;width:min(900px,95vw);max-height:85vh;overflow:auto;padding:35px;background:#1b130d;border:1px solid var(--line)}.window h2{color:var(--gold)}.close{position:absolute;right:15px;top:8px;border:0;background:transparent;color:var(--gold);font-size:30px;cursor:pointer}.pack-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}.pack-card{padding:22px;border:1px solid var(--line);background:#24190f;cursor:pointer}.pack-card h3{margin:0 0 8px;color:var(--gold)}.pack-card p,.muted{color:var(--muted)}.item-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.item{padding:14px;border:1px solid var(--line);background:#24190f;text-align:center}.item .rarity{display:block;color:var(--gold);font-size:12px;margin-top:5px}
 .animation-screen{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;background:#020511}.animation-screen.active{display:flex}.animation-screen:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,#18285a 0,#080d24 32%,#020511 72%,#000 100%);opacity:.9}.animation-screen:after{content:"";position:absolute;inset:-20%;background-image:radial-gradient(circle,#fff 0 1px,transparent 1.5px),radial-gradient(circle,#dbe7ff 0 1px,transparent 1.5px),radial-gradient(circle,#fff 0 .7px,transparent 1.2px);background-size:97px 113px,157px 131px,61px 73px;background-position:12px 8px,44px 31px,3px 19px;opacity:.7;animation:starsDrift 18s linear infinite}@keyframes starsDrift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-35px,25px,0) scale(1.03)}}.flash{position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 20px 10px #fff;opacity:0;animation:flash 3s 1.4s forwards}.summon-ring{position:absolute;width:420px;height:420px;border:1px solid #d6b87380;border-radius:50%;box-shadow:0 0 40px #d6b87344;opacity:0;animation:ring 2.5s .2s forwards}.result-scene{position:relative;z-index:3;width:100%;height:100%;min-height:440px;display:block}.summon-card{width:230px;height:330px;position:absolute;left:50%;top:50%;margin-left:-115px;margin-top:-165px;cursor:pointer;opacity:0;transform:translateY(100px) scale(.7);animation:cardIn 2.5s 1s forwards;transition:left .8s cubic-bezier(.22,1,.36,1),margin-left .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}.card-back,.card-front{position:absolute;inset:0;border:2px solid var(--gold);box-shadow:0 0 50px #000}.card-back{background:linear-gradient(135deg,#302216,#090705);color:var(--gold);font-size:24px;letter-spacing:.15em;display:flex;align-items:center;justify-content:center;text-align:center}.card-front{display:none;background:linear-gradient(135deg,#d6b873,#4a3520)}.card-front.show{display:block;animation:reveal .7s ease-out}.result-info{position:absolute;left:calc(50% + 95px);top:50%;width:min(470px,42vw);transform:translate(0,-50%) translateX(45px);opacity:0;pointer-events:none;transition:opacity .55s,transform .65s cubic-bezier(.22,1,.36,1)}.result-scene.revealed .summon-card{left:calc(50% - 285px);margin-left:-115px;transform:translateY(0) scale(1.2)}.result-scene.revealed .result-info{opacity:1;transform:translate(0,-50%);pointer-events:auto}.result-info h2{margin:5px 0;color:#f1dfae;font-size:34px}.result-rarity{color:var(--gold);font-size:18px}.performance{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.performance-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #49321e}.performance-row span{color:var(--muted)}
 
-/* --- ガチャ結果 説明エリアのデザイン変更 --- */
+/* --- ガチャ結果 説明エリアのデザイン --- */
 .performance-description,
 .identity-description {
   background: linear-gradient(180deg, rgba(33, 23, 15, 0.85) 0%, rgba(18, 13, 9, 0.92) 100%);
@@ -81,7 +81,7 @@ transform:translateY(20px);
 .ego-rank-line strong{font-size:22px}
 .identity-type{font-size:18px}
 
-/* --- カード内イラスト画像（画像のみ全面表示） --- */
+/* --- カード内イラスト画像（画像のみ全面表示 ＆ コピー/ドラッグ防止） --- */
 .card-front {
   padding: 0;
   overflow: hidden;
@@ -94,6 +94,11 @@ transform:translateY(20px);
   height: 100%;
   position: relative;
   overflow: hidden;
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .card-img {
@@ -105,6 +110,13 @@ transform:translateY(20px);
   object-fit: cover;
   object-position: center;
   display: block;
+  /* ドラッグ・選択・長押しメニューを禁止し、クリックイベントを親（カード）へ透過 */
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
 
 .card-img.img-error {
